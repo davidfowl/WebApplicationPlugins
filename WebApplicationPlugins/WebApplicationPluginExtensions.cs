@@ -47,7 +47,7 @@ public static class WebApplicationPluginExtensions
                 var doBuilder = type.GetMethod(nameof(WebApplicationPlugin.ConfigureWebApplicationBuilder))?.DeclaringType != typeof(WebApplicationPlugin);
                 var doApp = type.GetMethod(nameof(WebApplicationPlugin.ConfigureWebApplication))?.DeclaringType != typeof(WebApplicationPlugin);
 
-                // This type isn't instaniated using DI (chicken and egg problem)
+                // This type isn't instantiated using DI (chicken and egg problem)
                 plugins.Add(new(doBuilder, doApp, (WebApplicationPlugin)Activator.CreateInstance(type)!));
             }
         }
