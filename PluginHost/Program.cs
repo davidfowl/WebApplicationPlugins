@@ -2,7 +2,7 @@ using WebApplicationPlugins;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddWebApplicationPlugins();
+builder.AddPlugins();
 
 var app = builder.Build();
 

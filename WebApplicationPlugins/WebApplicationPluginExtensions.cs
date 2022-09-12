@@ -7,7 +7,7 @@ namespace WebApplicationPlugins;
 
 public static class WebApplicationPluginExtensions
 {
-    public static void AddWebApplicationPlugins(this WebApplicationBuilder builder, string pluginSection = "Plugins")
+    public static void AddPlugins(this WebApplicationBuilder builder, string pluginSection = "Plugins")
     {
         var plugins = new List<PluginData>();
 
