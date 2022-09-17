@@ -5,7 +5,7 @@ using WebApplicationPlugins;
 
 sealed class AuthPlugin : WebApplicationPlugin
 {
-    public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder)
+    public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder, PluginConfiguration pluginConfiguration)
     {
         builder.Services.AddAuthorizationBuilder()
             .AddPolicy("admin", pb => pb.RequireRole("admin"));

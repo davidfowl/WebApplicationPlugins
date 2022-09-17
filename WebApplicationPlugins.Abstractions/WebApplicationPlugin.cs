@@ -4,6 +4,11 @@ namespace WebApplicationPlugins;
 
 public abstract class WebApplicationPlugin
 {
-    public virtual void ConfigureWebApplicationBuilder(WebApplicationBuilder builder) { }
-    public virtual void ConfigureWebApplication(WebApplication app) { }
+    public virtual void ConfigureWebApplicationBuilder(WebApplicationBuilder builder, PluginConfiguration pluginData) { }
+    public virtual void ConfigureWebApplication(WebApplication app, PluginConfiguration pluginData) { }
+}
+
+public class PluginConfiguration
+{
+    public string ContentRootPath { get; init; } = default!;
 }

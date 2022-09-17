@@ -5,12 +5,12 @@ using WebApplicationPlugins;
 
 public sealed class GrpcPlugin : WebApplicationPlugin
 {
-    public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder)
+    public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder, PluginConfiguration pluginConfiguration)
     {
         builder.Services.AddGrpc();
     }
 
-    public override void ConfigureWebApplication(WebApplication app)
+    public override void ConfigureWebApplication(WebApplication app, PluginConfiguration pluginConfiguration)
     {
         app.MapGrpcService<GreeterService>();
     }

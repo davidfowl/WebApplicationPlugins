@@ -4,14 +4,14 @@ using WebApplicationPlugins;
 
 public sealed class ApiPlugin : WebApplicationPlugin
 {
-    public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder)
+    public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder, PluginConfiguration pluginConfiguration)
     {
         builder.Services.AddControllers().AddApplicationPart(typeof(ApiPlugin).Assembly);
     }
 
-    public override void ConfigureWebApplication(WebApplication app)
+    public override void ConfigureWebApplication(WebApplication app, PluginConfiguration pluginConfiguration)
     {
-        app.MapGet("/", () => "Hello World!");
+        app.MapGet("/api", () => "Hello World!");
 
         app.MapControllers();
     }

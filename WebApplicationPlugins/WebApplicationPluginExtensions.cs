@@ -26,16 +26,7 @@ public static class WebApplicationPluginExtensions
             var assemblyFile = Path.GetFullPath(c.AssemblyPath);
             var contentRootPath = c.ContentRootPath is not null ? Path.GetFullPath(c.ContentRootPath) : null;
 
-            if (contentRootPath is not null)
-            {
-                // Add configuration from content root path
-                var pluginAppSettingsFile = Path.Combine(contentRootPath, "appSettings.json");
-                var pluginEnvAppSettingsFile = Path.Combine(contentRootPath, $"appSettings.{builder.Environment.EnvironmentName}.json");
-
-                // Merge all of the configurations!
-                builder.Configuration.AddJsonFile(pluginAppSettingsFile, optional: true, reloadOnChange: true);
-                builder.Configuration.AddJsonFile(pluginEnvAppSettingsFile, optional: true, reloadOnChange: true);
-            }
+            var pluginConfiguration = new PluginConfiguration { ContentRootPath = contentRootPath ?? Path.GetDirectoryName(assemblyFile)! };
 
             var currentAssembly = Assembly.LoadFrom(assemblyFile);
 
@@ -48,7 +39,7 @@ public static class WebApplicationPluginExtensions
                 var doApp = type.GetMethod(nameof(WebApplicationPlugin.ConfigureWebApplication))?.DeclaringType != typeof(WebApplicationPlugin);
 
                 // This type isn't instantiated using DI (chicken and egg problem)
-                plugins.Add(new(doBuilder, doApp, (WebApplicationPlugin)Activator.CreateInstance(type)!));
+                plugins.Add(new(doBuilder, doApp, pluginConfiguration, (WebApplicationPlugin)Activator.CreateInstance(type)!));
             }
         }
 
@@ -56,7 +47,7 @@ public static class WebApplicationPluginExtensions
         {
             if (p.ConfigureWebApplicationBuilder)
             {
-                p.Plugin.ConfigureWebApplicationBuilder(builder);
+                p.Plugin.ConfigureWebApplicationBuilder(builder, p.Configuration);
 
                 // Use the same instance when mapping plugins
                 builder.Services.AddSingleton(typeof(PluginData), p);
@@ -70,13 +61,14 @@ public static class WebApplicationPluginExtensions
         {
             if (p.ConfigureWebApplication)
             {
-                p.Plugin.ConfigureWebApplication(app);
+                p.Plugin.ConfigureWebApplication(app, p.Configuration);
             }
         }
     }
 
     record PluginData(bool ConfigureWebApplicationBuilder,
                       bool ConfigureWebApplication,
+                      PluginConfiguration Configuration,
                       WebApplicationPlugin Plugin);
 
     class PluginConfig
