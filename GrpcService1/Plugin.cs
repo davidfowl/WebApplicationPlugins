@@ -1,9 +1,9 @@
 using GrpcService1.Services;
 using WebApplicationPlugins;
 
-[assembly: WebApplicationPlugin(typeof(GrpcPlugin))]
+[assembly: WebApplicationPlugin(typeof(Plugin))]
 
-public sealed class GrpcPlugin : WebApplicationPlugin
+public sealed class Plugin : WebApplicationPlugin
 {
     public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder, PluginSettings settings)
     {

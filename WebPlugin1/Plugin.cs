@@ -1,11 +1,11 @@
 ﻿using WebApplicationPlugins;
 using WebPlugin1;
 
-[assembly: WebApplicationPlugin(typeof(ChatPlugin))]
+[assembly: WebApplicationPlugin(typeof(Plugin))]
 
 namespace WebPlugin1;
 
-public sealed class ChatPlugin : WebApplicationPlugin
+public sealed class Plugin : WebApplicationPlugin
 {
     public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder, PluginSettings settings)
     {

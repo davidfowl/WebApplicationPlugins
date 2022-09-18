@@ -1,13 +1,13 @@
 using Microsoft.Extensions.FileProviders;
 using WebApplicationPlugins;
 
-[assembly: WebApplicationPlugin(typeof(PagesPlugin))]
+[assembly: WebApplicationPlugin(typeof(Plugin))]
 
-public sealed class PagesPlugin : WebApplicationPlugin
+public sealed class Plugin : WebApplicationPlugin
 {
     public override void ConfigureWebApplicationBuilder(WebApplicationBuilder builder, PluginSettings settings)
     {
-        builder.Services.AddRazorPages().AddApplicationPart(typeof(PagesPlugin).Assembly);
+        builder.Services.AddRazorPages().AddApplicationPart(typeof(Plugin).Assembly);
 
         // The module file provider is a composite of the root and this file provider
         var moduleFileProvider = new CompositeFileProvider(
