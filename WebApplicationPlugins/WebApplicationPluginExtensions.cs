@@ -26,7 +26,7 @@ public static class WebApplicationPluginExtensions
             var assemblyFile = Path.GetFullPath(c.AssemblyPath);
             var contentRootPath = c.ContentRootPath is not null ? Path.GetFullPath(c.ContentRootPath) : null;
 
-            var pluginConfiguration = new PluginConfiguration { ContentRootPath = contentRootPath ?? Path.GetDirectoryName(assemblyFile)! };
+            var settings = new PluginSettings { ContentRootPath = contentRootPath ?? Path.GetDirectoryName(assemblyFile)! };
 
             var currentAssembly = Assembly.LoadFrom(assemblyFile);
 
@@ -39,7 +39,7 @@ public static class WebApplicationPluginExtensions
                 var doApp = type.GetMethod(nameof(WebApplicationPlugin.ConfigureWebApplication))?.DeclaringType != typeof(WebApplicationPlugin);
 
                 // This type isn't instantiated using DI (chicken and egg problem)
-                plugins.Add(new(doBuilder, doApp, pluginConfiguration, (WebApplicationPlugin)Activator.CreateInstance(type)!));
+                plugins.Add(new(doBuilder, doApp, settings, (WebApplicationPlugin)Activator.CreateInstance(type)!));
             }
         }
 
@@ -47,7 +47,7 @@ public static class WebApplicationPluginExtensions
         {
             if (p.ConfigureWebApplicationBuilder)
             {
-                p.Plugin.ConfigureWebApplicationBuilder(builder, p.Configuration);
+                p.Plugin.ConfigureWebApplicationBuilder(builder, p.Settings);
 
                 // Use the same instance when mapping plugins
                 builder.Services.AddSingleton(typeof(PluginData), p);
@@ -61,14 +61,14 @@ public static class WebApplicationPluginExtensions
         {
             if (p.ConfigureWebApplication)
             {
-                p.Plugin.ConfigureWebApplication(app, p.Configuration);
+                p.Plugin.ConfigureWebApplication(app, p.Settings);
             }
         }
     }
 
     record PluginData(bool ConfigureWebApplicationBuilder,
                       bool ConfigureWebApplication,
-                      PluginConfiguration Configuration,
+                      PluginSettings Settings,
                       WebApplicationPlugin Plugin);
 
     class PluginConfig
