@@ -55,7 +55,7 @@ public static class WebApplicationPluginExtensions
         }
     }
 
-    public static void MapPlugins(this WebApplication app)
+    public static void UsePlugins(this WebApplication app)
     {
         foreach (var p in app.Services.GetServices<PluginData>())
         {

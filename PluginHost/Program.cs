@@ -21,6 +21,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapPlugins();
+app.UsePlugins();
 
 app.Run();
